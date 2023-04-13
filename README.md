@@ -1,4 +1,4 @@
-# Docker "Docker networks" Example
+# Docker "Docker multiple containers" Example
 
 Docker example that shows how to setup and run docker multi containers.
 
