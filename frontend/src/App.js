@@ -1,58 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import GoalInput from './components/goals/GoalInput';
-import CourseGoals from './components/goals/CourseGoals';
-import ErrorAlert from './components/UI/ErrorAlert';
+import GoalInput from './components/goals/GoalInput'
+import CourseGoals from './components/goals/CourseGoals'
+import ErrorAlert from './components/UI/ErrorAlert'
 
 function App() {
-  const [loadedGoals, setLoadedGoals] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loadedGoals, setLoadedGoals] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   useEffect(function () {
     async function fetchData() {
-      setIsLoading(true);
+      setIsLoading(true)
 
       try {
-        const response = await fetch('http://localhost/goals');
+        const response = await fetch('http://localhost:8080/goals')
 
-        const resData = await response.json();
+        const resData = await response.json()
 
         if (!response.ok) {
-          throw new Error(resData.message || 'Fetching the goals failed.');
+          throw new Error(resData.message || 'Fetching the goals failed.')
         }
 
-        setLoadedGoals(resData.goals);
+        setLoadedGoals(resData.goals)
       } catch (err) {
         setError(
           err.message ||
             'Fetching goals failed - the server responsed with an error.'
-        );
+        )
       }
-      setIsLoading(false);
+      setIsLoading(false)
     }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   async function addGoalHandler(goalText) {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost/goals', {
+      const response = await fetch('http://localhost:8080/goals', {
         method: 'POST',
         body: JSON.stringify({
           text: goalText,
         }),
         headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+          'Content-Type': 'application/json',
+        },
+      })
 
-      const resData = await response.json();
+      const resData = await response.json()
 
       if (!response.ok) {
-        throw new Error(resData.message || 'Adding the goal failed.');
+        throw new Error(resData.message || 'Adding the goal failed.')
       }
 
       setLoadedGoals((prevGoals) => {
@@ -62,43 +62,43 @@ function App() {
             text: goalText,
           },
           ...prevGoals,
-        ];
-        return updatedGoals;
-      });
+        ]
+        return updatedGoals
+      })
     } catch (err) {
       setError(
         err.message ||
           'Adding a goal failed - the server responsed with an error.'
-      );
+      )
     }
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
   async function deleteGoalHandler(goalId) {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost/goals/' + goalId, {
+      const response = await fetch('http://localhost:8080/goals/' + goalId, {
         method: 'DELETE',
-      });
+      })
 
-      const resData = await response.json();
+      const resData = await response.json()
 
       if (!response.ok) {
-        throw new Error(resData.message || 'Deleting the goal failed.');
+        throw new Error(resData.message || 'Deleting the goal failed.')
       }
 
       setLoadedGoals((prevGoals) => {
-        const updatedGoals = prevGoals.filter((goal) => goal.id !== goalId);
-        return updatedGoals;
-      });
+        const updatedGoals = prevGoals.filter((goal) => goal.id !== goalId)
+        return updatedGoals
+      })
     } catch (err) {
       setError(
         err.message ||
           'Deleting the goal failed - the server responsed with an error.'
-      );
+      )
     }
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
   return (
@@ -109,7 +109,7 @@ function App() {
         <CourseGoals goals={loadedGoals} onDeleteGoal={deleteGoalHandler} />
       )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
