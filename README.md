@@ -41,7 +41,7 @@ docker run -d --name multi-containers-db -v multi-containers-db:/data/db --rm  -
 Run the backend container in the same network:
 
 ```bash
-docker run -d -p 8089:80 --rm --network multi-containers --name backend backend
+docker run -d -p 8089:80 --rm --network multi-containers -v backend-logs:/app/logs --name backend backend
 ```
 
 Run the frontend container (no need to specify the network because the front app run in browser, not in docker directly who resolve network):
